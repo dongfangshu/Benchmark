@@ -1,4 +1,9 @@
 ﻿using MemoryPack;
+using Net;
+using System.Reflection;
+using UnityEngine;
+using Random = System.Random;
+using Vector3 = UnityEngine.Vector3;
 
 namespace TestConsole
 {
@@ -21,6 +26,12 @@ namespace TestConsole
         public bool BoolValue { get; set; }
         public List<List<int>> DoubleList { get; set; }
         public Dictionary<int, Commit> CommitDir { get; set; }
+        public Vector3 V1 { get; set; }
+        public Vector3 V2 { get; set; }
+        public TimeSpan TimeSpan { get; set; }
+        public Queue<int> Queue { get; set; }
+        public Stack<int> Stack { get; set; }
+        public LinkedList<int> LinkedList { get; set; }
     }
     [MemoryPackable]
     public partial class Resources
@@ -191,7 +202,21 @@ namespace TestConsole
 
                 return retDate;
             }
-
+            if (t == typeof(Vector3))
+            {
+                float v1 =(float)typeof(float).RandomValue(rand);
+                float v2 =(float)typeof(float).RandomValue(rand);
+                float v3 =(float)typeof(float).RandomValue(rand);
+                return new Vector3() {x = v1,y = v2,z = v3 };
+            }
+            if (t == typeof(TimeSpan))
+            {
+                var bytes = new byte[8];
+                rand.NextBytes(bytes);
+                var secsOffset = BitConverter.ToInt64(bytes,0);
+                TimeSpan timeSpan = TimeSpan.FromTicks(secsOffset);
+                return timeSpan;
+            }
             if (t.IsArray)
             {
                 //var arrType = t.MakeArrayType();
@@ -232,7 +257,7 @@ namespace TestConsole
 
             if (t.IsList())
             {
-                if (rand.Next(2) == 0 || depth >= 10)
+                if (rand.Next(20) == 0 || depth >= 10)
                 {
                     return null;
                 }
@@ -281,6 +306,64 @@ namespace TestConsole
 
                 return ret;
             }
+            if (t.IsQueue())
+            {
+                if (rand.Next(2) == 0 || depth >= 10)
+                {
+                    return null;
+                }
+                var queue = t.GetQueueInterface();
+                var keyType = t.GetGenericArguments()[0];
+                var ret = Activator.CreateInstance(queue);
+                var enqueue = queue.GetMethod("Enqueue");
+                var len = rand.Next(20);
+                for (int i = 0; i < len; i++)
+                {
+                    var element = keyType.RandomValue(rand);
+                    enqueue.Invoke(ret, new object[] { element });
+                }
+                return ret;
+            }
+            if (t.IsStack())
+            {
+                if (rand.Next(2) == 0 || depth >= 10)
+                {
+                    return null;
+                }
+                var stack = t.GetStackInterface();
+                var keyType = t.GetGenericArguments()[0];
+                var ret = Activator.CreateInstance(stack);
+                var push = stack.GetMethod("Push");
+                var len = rand.Next(20);
+                for (int i = 0; i < len; i++)
+                {
+                    var element = keyType.RandomValue(rand);
+                    push.Invoke(ret, new object[] { element });
+                }
+                return ret;
+            }
+            if (t.IsLinkedList())
+            {
+                if (rand.Next(2) == 0 || depth >= 10)
+                {
+                    return null;
+                }
+                //LinkedList<int> link;
+                //link.AddLast(0);
+                var keyType = t.GetGenericArguments()[0];
+                var linkedList = t.GetLinkedInterface();
+                var ret = Activator.CreateInstance(linkedList);
+                MethodInfo[] methods = linkedList.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
+                var addLast = methods.Where(x => x.Name == "AddLast" && x.GetParameters()[0].ParameterType == keyType).First();
+                //var addLast = linkedList.GetMethod("AddLast");
+                var len = rand.Next(20);
+                for (int i = 0; i < len; i++)
+                {
+                    var element = keyType.RandomValue(rand);
+                    addLast.Invoke(ret, new object[] { element });
+                }
+                return ret;
+            }
             var retObj = Activator.CreateInstance(t);
             foreach (var p in t.GetProperties())
             {
@@ -323,6 +406,45 @@ namespace TestConsole
                 (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IDictionary<,>)) ?
                 t :
                 t.GetInterfaces().First(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+        }
+        public static bool IsQueue(this Type t)
+        {
+            return
+                (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Queue<>)) ||
+                t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(Queue<>));
+        }
+        public static Type GetQueueInterface(this Type t)
+        {
+            return
+                (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Queue<>)) ?
+                t :
+                t.GetInterfaces().First(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(Queue<>));
+        }
+        public static bool IsStack(this Type t)
+        {
+            return
+                (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Stack<>)) ||
+                t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(Stack<>));
+        }
+        public static Type GetStackInterface(this Type t)
+        {
+            return
+                (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Stack<>)) ?
+                t :
+                t.GetInterfaces().First(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(Stack<>));
+        }
+        public static bool IsLinkedList(this Type t)
+        {
+            return
+                (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(LinkedList<>)) ||
+                t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(LinkedList<>));
+        }
+        public static Type GetLinkedInterface(this Type t)
+        {
+            return
+                (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(LinkedList<>)) ?
+                t :
+                t.GetInterfaces().First(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(LinkedList<>));
         }
         public static User GetTest1Data()
         {
