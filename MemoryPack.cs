@@ -8,15 +8,20 @@ using System.Threading.Tasks;
 
 namespace TestConsole
 {
-
+    [MemoryDiagnoser]
     public class MemoryPack
     {
         [Benchmark]
         public void Test1()
         {
             var data = ModelHelper.GetTest1Data();
-            var segment = MemoryPackSerializer.Serialize(data);
-            Console.WriteLine($"MemoryPack,byte size =" + segment.Length);
+            MemoryPackSerializer.Serialize(data);
+        }
+        public void ConsoleSize()
+        {
+            var data = ModelHelper.GetTest1Data();
+            byte[] bytes = MemoryPackSerializer.Serialize(data);
+            Console.WriteLine($"MemoryPack,byte size =" + bytes.Length);
         }
     }
 }

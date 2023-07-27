@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace TestConsole
 {
+    [MemoryDiagnoser]
     public class GDNet
     {
         [Benchmark]
@@ -15,7 +16,12 @@ namespace TestConsole
         {
             var data = ModelHelper.GetTest1Data();
             var segment = NetConvertFast2.SerializeObject(data);
-            Console.WriteLine($"GDNet,byte size ="+segment.Count);
+        }
+        public void ConsoleSize()
+        {
+            var data = ModelHelper.GetTest1Data();
+            int size = NetConvertFast2.SerializeObject(data).Count;
+            Console.WriteLine($"GDNet,byte size =" + size);
         }
     }
 }

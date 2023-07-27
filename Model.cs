@@ -20,6 +20,7 @@ namespace TestConsole
         public List<string> Tags { get; set; }
         public bool BoolValue { get; set; }
         public List<List<int>> DoubleList { get; set; }
+        public Dictionary<int, Commit> CommitDir { get; set; }
     }
     [MemoryPackable]
     public partial class Resources
@@ -27,6 +28,12 @@ namespace TestConsole
         public EResourceType ResourceType;
         public string ResourceName;
         public int ResourceCount;
+    }
+    [MemoryPackable]
+    public partial class Commit
+    {
+        public int ID;
+        public string Event;
     }
     public enum EResourceType
     {
@@ -185,6 +192,19 @@ namespace TestConsole
                 return retDate;
             }
 
+            if (t.IsArray)
+            {
+                //var arrType = t.MakeArrayType();
+                int length = rand.Next(20);
+                Array ret = Activator.CreateInstance(t, length) as Array;
+                var elememtType = t.GetElementType();
+                for (int i = 0; i < length; i++)
+                {
+                    ret.SetValue(elememtType.RandomValue(rand,depth+1),i);
+                }
+                return ret;
+            }
+
             if (t.IsNullable())
             {
                 // leave it unset
@@ -241,7 +261,7 @@ namespace TestConsole
                     return null;
                 }
 
-                var dic1 = t.GetListInterface();
+                var dic1 = t.GetDictionaryInterface();
 
                 var keyType = dic1.GetGenericArguments()[0];
                 var valueType = dic1.GetGenericArguments()[1];
@@ -296,6 +316,13 @@ namespace TestConsole
             return
                 (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IDictionary<,>)) ||
                 t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+        }
+        public static Type GetDictionaryInterface(this Type t)
+        {
+            return
+                (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IDictionary<,>)) ?
+                t :
+                t.GetInterfaces().First(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDictionary<,>));
         }
         public static User GetTest1Data()
         {
