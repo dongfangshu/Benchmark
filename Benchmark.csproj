@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -9,8 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="BenchmarkDotNet.Artifacts\**" />
     <Compile Remove="ProtocolEngine\**" />
+    <EmbeddedResource Remove="BenchmarkDotNet.Artifacts\**" />
     <EmbeddedResource Remove="ProtocolEngine\**" />
+    <None Remove="BenchmarkDotNet.Artifacts\**" />
     <None Remove="ProtocolEngine\**" />
   </ItemGroup>
 
