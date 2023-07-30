@@ -91,6 +91,7 @@ namespace TestConsole
             //protoBuf.ConsoleSize();
 
             BenchmarkRunner.Run<MyBenchMark>();
+
             //try
             //{
             //    MyBenchMark myBenchMark = new MyBenchMark();
@@ -125,6 +126,12 @@ namespace TestConsole
 
 
             //MyBenchMark myBenchMark = new MyBenchMark();
+            //myBenchMark.Protocol_Serialize();
+            //myBenchMark.Protocol_Serialize();
+            //myBenchMark.Protocol_Serialize();
+            //myBenchMark.Protocol_Deserialize();
+            //myBenchMark.Protocol_Deserialize();
+            //myBenchMark.Protocol_Deserialize();
             //myBenchMark.Gdnet_Deserialize();
 
             //procotol test
