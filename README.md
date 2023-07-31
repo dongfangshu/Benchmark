@@ -1,15 +1,14 @@
 # Benchmark
-一些序列化库的性能测试，给大伙提供参考
-设备信息
-// * Summary *
+一些序列化库的性能测试，给大伙提供参考<br>
+设备信息<br>
 
-BenchmarkDotNet v0.13.6, Windows 10 (10.0.19045.3208/22H2/2022Update)
-AMD Ryzen 5 5600X, 1 CPU, 12 logical and 6 physical cores
-.NET SDK 7.0.203
-  [Host]     : .NET 6.0.16 (6.0.1623.17311), X64 RyuJIT AVX2
-  DefaultJob : .NET 6.0.16 (6.0.1623.17311), X64 RyuJIT AVX2
+BenchmarkDotNet v0.13.6, Windows 10 (10.0.19045.3208/22H2/2022Update)<br>
+AMD Ryzen 5 5600X, 1 CPU, 12 logical and 6 physical cores<br>
+.NET SDK 7.0.203<br>
+  [Host]     : .NET 6.0.16 (6.0.1623.17311), X64 RyuJIT AVX2<br>
+  DefaultJob : .NET 6.0.16 (6.0.1623.17311), X64 RyuJIT AVX2<br>
 
-二进制测试
+**二进制测试**
 
 |                   Method |         Categories |     Mean |     Error |    StdDev |   Gen0 |   Gen1 | Allocated |
 |------------------------- |------------------- |---------:|----------:|----------:|-------:|-------:|----------:|
@@ -25,14 +24,14 @@ AMD Ryzen 5 5600X, 1 CPU, 12 logical and 6 physical cores
 |    MessagePack_Serialize |   Serialize,byte[] | 3.088 μs | 0.0227 μs | 0.0212 μs | 0.8049 |      - |   13544 B |
 |   Protobuf_net_Serialize |   Serialize,byte[] | 7.090 μs | 0.0195 μs | 0.0173 μs | 0.0076 |      - |     128 B |
 
-memoryPackObj binary size:13924,Deserialize result:True
-GDNet binary size:13547,Deserialize result:False
-Protobuf binary size:13786,Deserialize result:False
-Protocol binary size:13579
-MessagePack binary size:13518,Deserialize result:True
+memoryPackObj binary size:13924,Deserialize result:True<br>
+GDNet binary size:13547,Deserialize result:False<br>
+Protobuf binary size:13786,Deserialize result:False<br>
+Protocol binary size:13579<br>
+MessagePack binary size:13518,Deserialize result:True<br>
 
 
-json测试
+**json测试**
 
 |                  Method |       Categories |      Mean |    Error |   StdDev |   Gen0 |   Gen1 | Allocated |
 |------------------------ |----------------- |----------:|---------:|---------:|-------:|-------:|----------:|
@@ -46,7 +45,7 @@ json测试
 |   JsonUtility_Serialize |   Serialize,Json |  45.93 μs | 0.124 μs | 0.097 μs | 2.1362 |      - |  35.78 KB |
 |       LitJson_Serialize |   Serialize,Json |  59.03 μs | 0.158 μs | 0.147 μs | 2.1973 |      - |  36.14 KB |
 
-JsonSerializer Length:18059 result:False
-Newtonsoft Length:13973 result:False
-LitJson Length:13973 result:False
-Utf8Json Length:13976 result:False
+JsonSerializer Length:18059 result:False<br>
+Newtonsoft Length:13973 result:False<br>
+LitJson Length:13973 result:False<br>
+Utf8Json Length:13976 result:False<br>
