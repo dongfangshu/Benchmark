@@ -34,14 +34,19 @@ MessagePack binary size:13518,Deserialize result:True
 
 json测试
 
-|                  Method |       Categories |       Mean |   Error |  StdDev |   Gen0 | Allocated |
-|------------------------ |----------------- |-----------:|--------:|--------:|-------:|----------:|
-| JsonUtility_Deserialize | Deserialize,Json |   116.8 ns | 0.07 ns | 0.07 ns | 0.0052 |      88 B |
-|    Utf8Json_Deserialize | Deserialize,Json |   395.4 ns | 2.69 ns | 2.52 ns | 0.0138 |     232 B |
-|  Newtonsoft_Deserialize | Deserialize,Json | 2,261.1 ns | 9.86 ns | 9.22 ns | 0.1564 |    2672 B |
-|     LitJson_Deserialize | Deserialize,Json | 3,816.3 ns | 8.81 ns | 7.81 ns | 0.1984 |    3320 B |
-|                         |                  |            |         |         |        |           |
-|   JsonUtility_Serialize |   Serialize,Json |   107.3 ns | 0.99 ns | 0.92 ns | 0.0110 |     184 B |
-|      Utf8Json_Serialize |   Serialize,Json |   207.8 ns | 0.84 ns | 0.79 ns | 0.0153 |     256 B |
-|    Newtonsoft_Serialize |   Serialize,Json |   868.8 ns | 2.91 ns | 2.72 ns | 0.0935 |    1568 B |
-|       LitJson_Serialize |   Serialize,Json |   997.5 ns | 3.36 ns | 2.81 ns | 0.0286 |     496 B |
+|                  Method |       Categories |      Mean |    Error |   StdDev |   Gen0 |   Gen1 | Allocated |
+|------------------------ |----------------- |----------:|---------:|---------:|-------:|-------:|----------:|
+|    Utf8Json_Deserialize | Deserialize,Json |  29.15 μs | 0.059 μs | 0.053 μs | 2.3804 | 0.1526 |  39.07 KB |
+| JsonUtility_Deserialize | Deserialize,Json |  60.36 μs | 0.207 μs | 0.183 μs | 1.5259 | 0.1221 |   25.8 KB |
+|  Newtonsoft_Deserialize | Deserialize,Json |  60.44 μs | 0.214 μs | 0.200 μs | 2.7466 | 0.2441 |  45.84 KB |
+|     LitJson_Deserialize | Deserialize,Json | 117.05 μs | 0.194 μs | 0.181 μs | 4.7607 | 0.7324 |  78.23 KB |
+|                         |                  |           |          |          |        |        |           |
+|      Utf8Json_Serialize |   Serialize,Json |  25.10 μs | 0.058 μs | 0.054 μs | 1.6479 |      - |  27.37 KB |
+|    Newtonsoft_Serialize |   Serialize,Json |  40.44 μs | 0.188 μs | 0.176 μs | 4.0283 | 0.1831 |  66.04 KB |
+|   JsonUtility_Serialize |   Serialize,Json |  45.93 μs | 0.124 μs | 0.097 μs | 2.1362 |      - |  35.78 KB |
+|       LitJson_Serialize |   Serialize,Json |  59.03 μs | 0.158 μs | 0.147 μs | 2.1973 |      - |  36.14 KB |
+
+JsonSerializer Length:18059 result:False
+Newtonsoft Length:13973 result:False
+LitJson Length:13973 result:False
+Utf8Json Length:13976 result:False

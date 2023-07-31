@@ -6,82 +6,118 @@ namespace JsonBenchMark
 
     public class Data1
     {
-        public string str1;
-        public bool b1;
-        public int i1;
-        public int i2;
-        public Data2 d2;
-        public Data3 d3;
-        public List<Data4> d4;
-        public Data5 d5;
-        public Data7 d7;
-        public List<Data8> d8;
-        public int i3;
-        public bool b2;
+        public string str1 { get; set; }
+        public bool b1 { get; set; }
+        public int i1 { get; set; }
+        public int i2
+        {
+            get; set;
+        }
+        public Data2 d2 { get; set; }
+        public Data3 d3 { get; set; }
+        public List<Data4> d4 { get; set; }
+        public Data5 d5 { get; set; }
+        public Data7 d7 { get; set; }
+        public List<Data8> d8 { get; set; }
+        public int i3 { get; set; }
+        public bool b2 { get; set; }
     }
     public class Data2
     {
-        public int i1;
-        public int i2;
-        public int i3;
-        public Data9 d9;
+        public int i1 { get; set; }
+        public int i2 { get; set; }
+        public int i3 { get; set; }
+        public Data9 d9 { get; set; }
 
-        public int i4;
-        public int i5;
-        public int i6;
-        public int i7;
-        public int i8;
+        public int i4 { get; set; }
+        public int i5 { get; set; }
+        public int i6 { get; set; }
+        public int i7 { get; set; }
+        public int i8 { get; set; }
 
         //升级的所有属性加成
-        public int i9;
-        public int i10;
-        public int i11;
-        public int i12;
-        public int i13;
+        public int i9 { get; set; }
+        public int i10 { get; set; }
+        public int i11 { get; set; }
+        public int i12 { get; set; }
+        public int i13 { get; set; }
     }
     public class Data4
     {
-        public string str1; // id
-        public string str2; // 配置表id
-        public bool b1; // 锁定状态
-        public int i1; // 等级
-        public string str3; // 角色id
+        public string str1 { get; set; } // id
+        public string str2 { get; set; } // 配置表id
+        public bool b1 { get; set; } // 锁定状态
+        public int i1 { get; set; } // 等级
+        public string str3 { get; set; } // 角色id
     }
     public class Data3
     {
-        public Vector3 v1;
-        public Vector3 v2;
-        public Vector3 v3;
-        public Vector3 v4;
-        public Vector3 v5;
+        public Vector3 v1 { get; set; }
+        public Vector3 v2 { get; set; }
+        public Vector3 v3 { get; set; }
+        public Vector3 v4 { get; set; }
+        public Vector3 v5 { get; set; }
 
-        public int i1;
-        public int i2;
-        public int i3;
-        public int i4;
-        public int i5;
+        public int i1 { get; set; }
+        public int i2 { get; set; }
+        public int i3 { get; set; }
+        public int i4 { get; set; }
+        public int i5 { get; set; }
     }
     public class Vector3
     {
-        public float X;
-        public float Y;
-        public float Z;
+        public float X { get; set; }
+        public float Y
+        {
+            get; set;
+        }
+        public float Z
+        {
+            get; set;
+        }
     }
     public class Data5
     {
         public string str1;
         public string str2;
-        public bool b1;
-        public int i1;
-        public int i2;
-        public int i3;
+        public bool b1
+        {
+            get; set;
+        }
+        public int i1
+        {
+            get; set;
+        }
+        public int i2
+        {
+            get; set;
+        }
+        public int i3
+        {
+            get; set;
+        }
         public string str3;
 
-        public int i4;
-        public bool b2;
-        public long l1;
-        public int i5;
-        public int i6;
+        public int i4
+        {
+            get; set;
+        }
+        public bool b2
+        {
+            get; set;
+        }
+        public long l1
+        {
+            get; set;
+        }
+        public int i5
+        {
+            get; set;
+        }
+        public int i6
+        {
+            get; set;
+        }
         public Data6 d6;
 
     }
@@ -106,17 +142,35 @@ namespace JsonBenchMark
     }
     public class Data8
     {
-        public int i1;
-        public int i2;
-        public float f1;
-        public float f2;
+        public int i1
+        {
+            get; set;
+        }
+        public int i2
+        {
+            get; set;
+        }
+        public float f1
+        {
+            get; set;
+        }
+        public float f2
+        {
+            get; set;
+        }
     }
     public class Data9
     {
-        public DataType1 e1;
+        public DataType1 e1
+        {
+            get; set;
+        }
         public string s1;
         public string s2;
-        public long l1;
+        public long l1
+        {
+            get; set;
+        }
     }
     public enum DataType1
     {

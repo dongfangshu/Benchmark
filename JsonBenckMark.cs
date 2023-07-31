@@ -28,7 +28,7 @@ public class JsonBenckMark<T> where T : class,new()
         Console.WriteLine($"Newtonsoft Length:{jsonNewton.Length} result:{result}");
 
         litjson = LitJson.JsonMapper.ToJson(Value);
-        var litjsonObj = LitJson.JsonMapper.ToObject(litjson);
+        var litjsonObj = LitJson.JsonMapper.ToObject<T>(litjson);
         result = Value.Equals(litjsonObj);
         Console.WriteLine($"LitJson Length:{litjson.Length} result:{result}");
 
