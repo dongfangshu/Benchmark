@@ -1,4 +1,5 @@
 ﻿using MemoryPack;
+using MessagePack;
 using Net;
 using ProtoBuf;
 using System.Reflection;
@@ -7,48 +8,66 @@ using UnityEngine;
 using Random = System.Random;
 using Vector3 = UnityEngine.Vector3;
 
-
+[MessagePackObject]
 [ProtoContract]
 [MemoryPackable]
 public partial class User
 {
     [ProtoMember(1)]
+    [Key(0)]
     public long ID { get; set; }
+    [Key(1)]
     [ProtoMember(2)]
     public string Name { get; set; }
+    [Key(2)]
     [ProtoMember(3)]
     public List<Resources> UserResources { get; set; }
+    [Key(3)]
     [ProtoMember(4)]
     public Dictionary<string, string> UserResourcesDictionary { get; set; }
+    [Key(4)]
     [ProtoMember(5)]
     public DateTime DateTime { get; set; }
     //[ProtoMember(6)]
     //public DateTime? DateTime1 { get; set; }
-    [ProtoMember(7)]
+    [Key(5)]
+    [ProtoMember(6)]
     public int[] IntArray { get; set; }
-    [ProtoMember(8)]
+    [Key(6)]
+    [ProtoMember(7)]
     public char SingleChar { get; set; }
-    [ProtoMember(9)]
+    [Key(7)]
+    [ProtoMember(8)]
     public char[] CharArray { get; set; }
-    [ProtoMember(10)]
+    [Key(8)]
+    [ProtoMember(9)]
     public int Count { get; set; }
-    [ProtoMember(11)]
+    [Key(9)]
+    [ProtoMember(10)]
     public string Str { get; set; }
-    [ProtoMember(12)]
+    [Key(10)]
+    [ProtoMember(11)]
     public string Title { get; set; }
-    [ProtoMember(13)]
+    [Key(11)]
+    [ProtoMember(12)]
     public List<string> Tags { get; set; }
-    [ProtoMember(14)]
+    [Key(12)]
+    [ProtoMember(13)]
     public bool BoolValue { get; set; }
-    [ProtoMember(15)]
+    [Key(13)]
+    [ProtoMember(14)]
     public Dictionary<int, Commit> CommitDir { get; set; }
-    [ProtoMember(16)]
+    [Key(14)]
+    [ProtoMember(15)]
     public TimeSpan TimeSpan { get; set; }
-    [ProtoMember(17)]
+    [Key(15)]
+    [ProtoMember(16)]
     public Queue<int> Queue { get; set; }
-    [ProtoMember(18)]
+    [Key(16)]
+    [ProtoMember(17)]
     public Stack<int> Stack { get; set; }
-    [ProtoMember(19)]
+    [Key(17)]
+    [ProtoMember(18)]
     public LinkedList<int> LinkedList { get; set; }
     //public List<List<int>> DoubleList { get; set; }
     //public int[,] mArray;
@@ -140,14 +159,18 @@ public partial class User
     }
 
 }
+[MessagePackObject]
 [ProtoContract]
 [MemoryPackable]
 public partial class Resources
 {
+    [Key(0)]
     [ProtoMember(1)]
     public EResourceType ResourceType { get; set; }
+    [Key(1)]
     [ProtoMember(2)]
     public string ResourceName { get; set; }
+    [Key(2)]
     [ProtoMember(3)]
     public int ResourceCount { get; set; }
     public override bool Equals(object? obj)
@@ -172,12 +195,15 @@ public partial class Resources
         return true;
     }
 }
+[MessagePackObject]
 [ProtoContract]
 [MemoryPackable]
 public partial class Commit
 {
+    [Key(0)]
     [ProtoMember(1)]
     public int ID { get; set; }
+    [Key(1)]
     [ProtoMember(2)]
     public string Event { get; set; }
     public override bool Equals(object? obj)

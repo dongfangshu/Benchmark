@@ -3,6 +3,7 @@ using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Order;
 using Dia2Lib;
 using MemoryPack;
+using MessagePack;
 using Net.Serialize;
 using Net.System;
 using Newtonsoft_X.Json.Linq;
@@ -20,27 +21,34 @@ namespace TestConsole
     [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
     [Orderer(SummaryOrderPolicy.FastestToSlowest)]
     [MemoryDiagnoser]
-    public class MyBenchMark
+    public class BinaryBenchMark<T> where T : class,new()
     {
-        User Value;
-        MemoryStream stream;
+        T Value;
+
         byte[] MemoryPackBin;
+
         byte[] GDNetBin;
         Segment GDNetSegment;
+
+        MemoryStream stream;
         byte[] ProtobufBin;
-        BenchMark.User ProtocolData;
+
+        Protocol ProtocolData;
         byte[] ProtocolBin;
-        public MyBenchMark() {
+
+        byte[] MessagePackBin;
+
+        public BinaryBenchMark() {
+            Value = ModelHelper.GetTest1Data<T>();
             stream = new MemoryStream();
-            Value = ModelHelper.GetTest1Data();
             MemoryPackBin = MemoryPackSerializer.Serialize(Value);
             var memoryPackObj = MemoryPackSerializer.Deserialize<User>(MemoryPackBin);
             bool right = Value.Equals(memoryPackObj);
             Console.WriteLine($"memoryPackObj binary size:{MemoryPackBin.Length},Deserialize result:{right}");
 
             GDNetSegment = NetConvertFast2.SerializeObject(Value);
-            GDNetBin = GDNetSegment.ToArray();
             var GDNetObj = NetConvertFast2.DeserializeObject<User>(GDNetSegment);
+            GDNetBin = GDNetSegment.ToArray();
             right = Value.Equals(GDNetObj);
             Console.WriteLine($"GDNet binary size:{GDNetSegment.Count},Deserialize result:{right}");
 
@@ -56,6 +64,11 @@ namespace TestConsole
             int offset = 0;
             ProtocolData.Write(ProtocolBin,ref offset);
             Console.WriteLine($"Protocol binary size:{offset}");
+
+            MessagePackBin = MessagePackSerializer.Serialize(Value);
+            var MessagePackObj = MessagePackSerializer.Deserialize<T>(MessagePackBin);
+            right = Value.Equals(MessagePackObj);
+            Console.WriteLine($"MessagePack binary size:{MessagePackBin.Length},Deserialize result:{right}");
         }
 
         [Benchmark,BenchmarkCategory("Serialize","byte[]")]
@@ -71,13 +84,14 @@ namespace TestConsole
         [Benchmark, BenchmarkCategory("Serialize", "byte[]")]
         public void Gdnet_Serialize()
         {
-            NetConvertFast2.SerializeObject(Value);
+            NetConvertFast2.SerializeObject(Value).ToArray(true);
         }
         [Benchmark, BenchmarkCategory("Deserialize", "byte[]")]
         public void Gdnet_Deserialize()
         {
-            //Segment segment = BufferPool.Take();
-            Segment segment = new Segment(GDNetBin);
+            Segment segment = BufferPool.Take();
+            segment.Buffer = GDNetBin;
+            //Segment segment = new Segment(GDNetBin);
             //GDNetSegment.Position = 0;
             //GDNetSegment.Offset = 0;
             NetConvertFast2.DeserializeObject<User>(segment, true);
@@ -107,6 +121,16 @@ namespace TestConsole
             int offset = 0;
             BenchMark.User BenchMarkUserData = new BenchMark.User();
             BenchMarkUserData.Read(ProtocolBin, ref offset);
+        }
+        [Benchmark, BenchmarkCategory("Serialize", "byte[]")]
+        public void MessagePack_Serialize()
+        {
+            MessagePackSerializer.Serialize(Value);
+        }
+        [Benchmark, BenchmarkCategory("Deserialize", "byte[]")]
+        public void MessagePack_Deserialize()
+        {
+            MessagePackSerializer.Deserialize<User>(MessagePackBin);
         }
     }
 }

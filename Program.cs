@@ -1,10 +1,12 @@
-﻿using BenchmarkDotNet.Configs;
+﻿using Benchmark;
+using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Running;
 using Binding;
 using MemoryPack;
+using MessagePack.Resolvers;
 using Net.Serialize;
 using Net.System;
 using Newtonsoft_X.Json.Linq;
@@ -58,8 +60,9 @@ namespace TestConsole
             //        config.WithOptions(ConfigOptions.DisableOptimizationsValidator);
             //Fast2BuildMethod.DynamicBuild(BindingEntry.GetBindTypes());//动态编译指定的类型列表
 
-
-             var Value = ModelHelper.GetTest1Data();
+            NetConvertFast2.Init();
+            //Fast2BuildMethod.BuildArray();
+            //var Value = ModelHelper.GetTest1Data();
             //try
             //{
             //    //MyData myData = new MyData();
@@ -89,8 +92,18 @@ namespace TestConsole
 
             //ProtoBuf protoBuf = new ProtoBuf();
             //protoBuf.ConsoleSize();
+            //            _resolver = CompositeResolver.Create(
+            //    SmartEnumNameResolver.Instance,
+            //    SmartEnumValueResolver.Instance,
+            //    StandardResolver.Instance
+            //);
+            //BinaryBenchMark<User> binaryBenchMark = new BinaryBenchMark<User>();
 
-            BenchmarkRunner.Run<MyBenchMark>();
+            //BenchmarkRunner.Run<BinaryBenchMark<User>>();
+            BenchmarkRunner.Run<JsonBenckMark<JsonBenchMark.Data1>>();
+            //JsonBenckMark<JsonBenchMark.Data1> jsonBenckMark = new JsonBenckMark<JsonBenchMark.Data1>();
+            //BenchmarkRunner.Run<八倍哥的测试代码>();
+            //八倍哥的测试代码 t= new 八倍哥的测试代码();
 
             //try
             //{

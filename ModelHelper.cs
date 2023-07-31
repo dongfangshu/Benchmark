@@ -11,7 +11,7 @@ using Vector3 = UnityEngine.Vector3;
 public static class ModelHelper
 {
     static readonly char[] ASCII;
-    static User Test1Data;
+    //static User Test1Data;
     static Random Rand;
     static ModelHelper()
     {
@@ -28,7 +28,7 @@ public static class ModelHelper
         }
 
         ASCII = cs.ToArray();
-        Test1Data = MakeSingleObject<User>();
+        //Test1Data = MakeSingleObject<User>();
     }
     static T MakeSingleObject<T>() where T : class, new()
     {
@@ -400,47 +400,52 @@ public static class ModelHelper
             t :
             t.GetInterfaces().First(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(LinkedList<>));
     }
-    public static User GetTest1Data()
+    public static T GetTest1Data<T>() where T : class,new()
     {
-        return Test1Data;
+        var obj = MakeSingleObject<T>();
+        return obj;
     }
 
-    public static BenchMark.User UserToProtocol(User Value)
+    public static Protocol UserToProtocol<T>(T originValue)
     {
-        BenchMark.User user = new BenchMark.User();
-        user.ID = Value.ID;
-        user.Name = Value.Name;
-        List<BenchMark.Resources> protocol = new List<BenchMark.Resources>();
-        foreach (var item in Value.UserResources)
+        if (originValue is User Value)
         {
-            BenchMark.Resources resources = new BenchMark.Resources();
-            resources.ResourceCount = item.ResourceCount;
-            resources.ResourceName = item.ResourceName ?? string.Empty;
-            resources.ResourceType = (BenchMark.EResourceType)item.ResourceType;
-            protocol.Add(resources);
+            BenchMark.User user = new BenchMark.User();
+            user.ID = Value.ID;
+            user.Name = Value.Name;
+            List<BenchMark.Resources> protocol = new List<BenchMark.Resources>();
+            foreach (var item in Value.UserResources)
+            {
+                BenchMark.Resources resources = new BenchMark.Resources();
+                resources.ResourceCount = item.ResourceCount;
+                resources.ResourceName = item.ResourceName ?? string.Empty;
+                resources.ResourceType = (BenchMark.EResourceType)item.ResourceType;
+                protocol.Add(resources);
+            }
+            user.UserResources = protocol;
+            user.UserResourcesDictionary = Value.UserResourcesDictionary;
+            user.DateTime = Value.DateTime;
+            user.IntArray = Value.IntArray ?? new int[0];
+            user.SingleChar = Value.SingleChar;
+            user.CharArray = Value.CharArray;
+            user.Count = Value.Count;
+            user.Str = Value.Str;
+            user.Title = Value.Title;
+            user.Tags = Value.Tags;
+            user.BoolValue = Value.BoolValue;
+            foreach (var item in Value.CommitDir)
+            {
+                BenchMark.Commit commit = new BenchMark.Commit();
+                commit.ID = item.Value.ID;
+                commit.Event = item.Value.Event ?? string.Empty;
+                user.CommitDir.Add(item.Key, commit);
+            }
+            user.TimeSpan = Value.TimeSpan;
+            user.Queue = Value.Queue;
+            user.Stack = Value.Stack;
+            user.LinkedList = Value.LinkedList;
+            return user;
         }
-        user.UserResources = protocol;
-        user.UserResourcesDictionary = Value.UserResourcesDictionary;
-        user.DateTime = Value.DateTime;
-        user.IntArray = Value.IntArray ?? new int[0];
-        user.SingleChar = Value.SingleChar;
-        user.CharArray = Value.CharArray;
-        user.Count = Value.Count;
-        user.Str = Value.Str;
-        user.Title = Value.Title;
-        user.Tags = Value.Tags;
-        user.BoolValue = Value.BoolValue;
-        foreach (var item in Value.CommitDir)
-        {
-            BenchMark.Commit commit = new BenchMark.Commit();
-            commit.ID = item.Value.ID;
-            commit.Event = item.Value.Event ?? string.Empty;
-            user.CommitDir.Add(item.Key, commit);
-        }
-        user.TimeSpan = Value.TimeSpan;
-        user.Queue = Value.Queue;
-        user.Stack = Value.Stack;
-        user.LinkedList = Value.LinkedList;
-        return user;
+        throw new NotImplementedException("为转化的类型");
     }
 }
